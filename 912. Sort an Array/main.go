@@ -44,3 +44,42 @@ func sortArray(nums []int) []int {
 	}
 	return nums
 }
+
+// Counting Sort
+func sortArray(nums []int) []int {
+	var min, max int
+	for _, num := range nums {
+		if num < min {
+			min = num
+		}
+		if num > max {
+			max = num
+		}
+	}
+
+	frequencies := make([]int, max-min+1)
+	for _, num := range nums {
+		frequencies[num-min]++
+	}
+
+	// like prefix sums
+	for i := 1; i < len(frequencies); i++ {
+		frequencies[i] = frequencies[i-1] + frequencies[i]
+	}
+
+	// right shift
+	var prev, temp int
+	for i := 0; i < len(frequencies); i++ {
+		temp = frequencies[i]
+		frequencies[i] = prev
+		prev = temp
+	}
+
+	sorted := make([]int, len(nums))
+	for _, num := range nums {
+		sorted[frequencies[num-min]] = num
+		frequencies[num]++
+	}
+
+	return sorted
+}
