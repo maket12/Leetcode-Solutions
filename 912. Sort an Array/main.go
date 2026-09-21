@@ -26,3 +26,21 @@ func sortArray(nums []int) []int {
 	}
     return nums
 }
+
+// Selection Sort
+func sortArray(nums []int) []int {
+	for i := 0; i < len(nums) - 1; i++ {
+		currentMin := i
+
+		for j := i + 1; j < len(nums); j++ {
+			if nums[j] < nums[currentMin] {
+				currentMin = j
+			}
+		}
+
+		if currentMin != i {
+			nums[i], nums[currentMin] = nums[currentMin], nums[i]
+		}
+	}
+	return nums
+}
