@@ -12,7 +12,7 @@ func sortArray(nums []int) []int {
 
 
 // Insertion Sort
-func sortArray(nums []int) []int {
+func insertionSort(nums []int) []int {
     for i := 1; i < len(nums); i++ {
 		current := nums[i]
 		j := i - 1
@@ -82,4 +82,41 @@ func sortArray(nums []int) []int {
 	}
 
 	return sorted
+}
+
+// Bucket sort
+func sortArray(nums []int) []int {
+	if len(nums) <= 1 {
+        return nums
+    }
+
+	max := nums[0]
+	for _, num := range nums {
+		if num > max {
+			max = num
+		}
+	}
+
+	buckets := make([][]int, len(nums))
+	for _, num := range nums {
+		normalized := float64(num) / float64(max + 1)
+
+		bucketNum := int(float64(len(nums)) * normalized)
+		if bucketNum >= len(nums) {
+            bucketNum = len(nums) - 1
+        }
+
+		buckets[bucketNum] = append(buckets[bucketNum], num)
+	}
+
+	numsCnt := 0
+	for i := range buckets {
+		buckets[i] = insertionSort(buckets[i])
+		for _, j := range buckets[i] {
+			nums[numsCnt] = j
+			numsCnt++
+		}
+	}
+
+	return nums
 }
