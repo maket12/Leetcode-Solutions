@@ -120,3 +120,38 @@ func sortArray(nums []int) []int {
 
 	return nums
 }
+
+// Merge sort
+func merge(a, b []int) []int {
+	n1, n2 := len(a), len(b)
+	merged := make([]int, 0, n1 + n2)
+
+	i, j := 0, 0
+	for i < n1 && j < n2 {
+		if a[i] > b[j] {
+			merged = append(merged, b[j])
+			j++
+		} else {
+			merged = append(merged, a[i])
+			i++
+		}
+	}
+
+	merged = append(merged, a[i:]...)
+    merged = append(merged, b[j:]...)
+
+	return merged
+}
+
+func sortArray(nums []int) []int {
+	if len(nums) == 1 {
+		return nums
+	}
+
+	mid := len(nums) / 2
+    
+    a := sortArray(nums[:mid])
+    b := sortArray(nums[mid:])
+
+	return merge(a, b)
+}
